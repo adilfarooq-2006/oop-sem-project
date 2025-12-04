@@ -36,5 +36,10 @@ public class Barbarian extends Character {
         System.out.println("Barbaian shouts: 'Grrw!!' ");
     }
 
+    @Override 
+    public String getSymbol() {
+        return "B";
+    }
+
 
 }

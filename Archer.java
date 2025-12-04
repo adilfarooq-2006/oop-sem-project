@@ -35,4 +35,9 @@ public class Archer extends Character {//constructors
         System.out.println("Archer is scouting the area...");
     }
 
+    @Override 
+    public String getSymbol() {
+        return "A";
+    }
+
 }

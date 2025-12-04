@@ -79,4 +79,6 @@ public abstract class Character implements Moveable, Attacker{
     //abstract Method
     public abstract void performAction();
 
+    public abstract String getSymbol();
+
 }
