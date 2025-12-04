@@ -8,9 +8,10 @@ public abstract class Character implements Moveable, Attacker{
     protected Position position;
 
     //constructor
-    Character(String name, int currentHP, int maxHP, int attackDamage, int attackRange, int x, int y) {
+    Character(String name, int maxHP, int attackDamage, int attackRange, int x, int y) {
         this.name = name;
-        this.currentHP = currentHP;
+        this.maxHP = maxHP;
+        this.currentHP = maxHP;
         this.attackDamage = attackDamage;
         this.attackRange = attackRange;
         this.position = new Position(x, y);
