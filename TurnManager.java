@@ -48,16 +48,18 @@ public class TurnManager {
             try {
                 if (choice == 1) {
                     handleMove(currPlayer);
-                } else if (choice == 2) {
+                } 
+                else if (choice == 2) {
                     handleAttack(currPlayer, enemy);
 
                     if (!enemy.isAlive()) {
                         System.out.println("\nGAME OVER");
                         System.out.println(currPlayer.getName() + " wins the game");
                         gameOver = true;
-                    } else {
-                        System.out.println("Ivalid Input. Turn Skipped.");
                     }
+                }
+                else {
+                    System.out.println("Ivalid Input. Turn Skipped.");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: " + e.getMessage());

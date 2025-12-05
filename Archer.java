@@ -14,7 +14,7 @@ public class Archer extends Character {//constructors
         //get distance from target
         double distance = this.calculateDistance(target);
 
-        if (distance <= 1.5) {
+        if (distance <= 3) {
             //allow attack
             System.out.println(this.getName() + " shots arrow at " + target.getName());
             target.receiveDamage(this.getAttackDamage());
@@ -24,10 +24,24 @@ public class Archer extends Character {//constructors
     }
     
     public boolean move(int newX, int newY) {
-        //Barbarian Moves 1 Tile only
-        this.getPosition().setX(newX);
-        this.getPosition().setY(newY);
-        return true;
+        // Archer can only move 3 tile at a time
+        int currentX = this.getPosition().getX();
+        int currentY = this.getPosition().getY();
+        
+        // Calculate distance to new position
+        int deltaX = Math.abs(newX - currentX);
+        int deltaY = Math.abs(newY - currentY);
+
+        // Check if move is within 3 tile (horizontally, vertically, or diagonally)
+        if (deltaX <= 3 && deltaY <= 3 && (deltaX + deltaY) > 0) {
+            this.getPosition().setX(newX);
+            this.getPosition().setY(newY);
+            return true;
+        } 
+        else {
+            System.out.println("Invalid move! Archer can only move max 3 tiles.");
+            return false;
+        }
     }
 
     @Override 

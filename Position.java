@@ -32,13 +32,18 @@ public class Position {
 
     public double getDistance(Position otherCharacter) {
         //get distance by Pythagoras Theoram
-        int distanceX = this.getX();
-        int distanceY = this.getY();
+        int distanceX = this.getX() - otherCharacter.getX();
+        int distanceY = this.getY() - otherCharacter.getY();
+
 
         // c^2 =  a^2 + b^2
         // distance = x^2 + y^2
         double distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
-
         return distance;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + xPos + ", " + yPos + ")";
     }
 }

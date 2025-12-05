@@ -25,10 +25,24 @@ public class Barbarian extends Character {
     }
     
     public boolean move(int newX, int newY) {
-        //Barbarian Moves 1 Tile only
-        this.getPosition().setX(newX);
-        this.getPosition().setY(newY);
-        return true;
+        // Barbarian can only move 1 tile at a time
+        int currentX = this.getPosition().getX();
+        int currentY = this.getPosition().getY();
+        
+        // Calculate distance to new position
+        int deltaX = Math.abs(newX - currentX);
+        int deltaY = Math.abs(newY - currentY);
+
+        // Check if move is within 1 tile (horizontally, vertically, or diagonally)
+        if (deltaX <= 1 && deltaY <= 1 && (deltaX + deltaY) > 0) {
+            this.getPosition().setX(newX);
+            this.getPosition().setY(newY);
+            return true;
+        } 
+        else {
+            System.out.println("Invalid move! Barbarian can only move 1 tile.");
+            return false;
+        }
     }
 
     @Override 

@@ -38,8 +38,12 @@ public class GameGrid {
         //move is valid
         Position currPos = character.getPosition();
 
+        if (!character.move(x, y)) {
+            throw new InvalidMoveException("Character cannot move that far!");
+        }
+
         //remove the old pos
-        board[currPos.getY()][currPos.getY()] = null;
+        board[currPos.getY()][currPos.getX()] = null;
 
         //update the characters state
         character.move(x, y);
