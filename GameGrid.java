@@ -12,7 +12,7 @@ public class GameGrid {
     //fucntion to place character for first time on board
     public void placeCharacter(Character character, int x, int y) {
         //check if the position is valid (empty)
-        if (!isValidCoordinate(x, y) && board[y][x] == null) {
+        if (isValidCoordinate(x, y) && board[y][x] == null) {
             board[y][x] = character;
 
             //update character coordinates now also
