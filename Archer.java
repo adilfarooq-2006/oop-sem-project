@@ -32,8 +32,10 @@ public class Archer extends Character {//constructors
         int deltaX = Math.abs(newX - currentX);
         int deltaY = Math.abs(newY - currentY);
 
+        int range = 3;
+
         // Check if move is within 3 tile (horizontally, vertically, or diagonally)
-        if (deltaX <= 3 && deltaY <= 3 && (deltaX + deltaY) > 0) {
+        if ((deltaX > 0 || deltaY > 0) && deltaX <= range && deltaY <= range) {
             this.getPosition().setX(newX);
             this.getPosition().setY(newY);
             return true;

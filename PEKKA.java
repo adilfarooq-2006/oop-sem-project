@@ -33,8 +33,9 @@ public class PEKKA extends Character {
         int deltaX = Math.abs(newX - currentX);
         int deltaY = Math.abs(newY - currentY);
 
+        int range = 1;
         // Check if move is within 1 tile (horizontally, vertically, or diagonally)
-        if (deltaX <= 1 && deltaY <= 1 && (deltaX + deltaY) > 0) {
+        if ((deltaX > 0 || deltaY > 0) && deltaX <= range && deltaY <= range) {
             this.getPosition().setX(newX);
             this.getPosition().setY(newY);
             return true;
