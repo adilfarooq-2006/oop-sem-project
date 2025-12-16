@@ -53,7 +53,13 @@ public abstract class Character implements Moveable, Attacker{
     //methods
     public double calculateDistance(Character target) {
         //we call the pythagoras distance calculating method made in Position Class
-        return this.position.getDistance(target.getPosition());
+        int dx = Math.abs(this.getPosition().getX() - target.getPosition().getX());
+        int dy = Math.abs(this.getPosition().getY() - target.getPosition().getY());
+
+        // 2. Use "Chebyshev Distance" (King's Logic)
+        // This simply takes the larger of the two numbers.
+        // Example: (0,0) to (1,1) -> dx=1, dy=1 -> Max is 1.
+        return Math.max(dx, dy);
     }
 
     public void receiveDamage(int damageAmount) {
