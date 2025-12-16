@@ -60,28 +60,10 @@ public class TurnManager {
                 }
                 
                 else if (action.equals("ATTACK")) {
-                    // 1. Check Range First (Validation)
-                    if (currPlayer.calculateDistance(enemy) > currPlayer.getAttackRange()) {
-                        throw new Exception("Target is too far!");
-                    }
-
-                    // 2. Perform Attack Logic
-                    int dmg = currPlayer.getAttackDamage(); // Get the damage amount
-                    currPlayer.attack(enemy);
-
-                    // 3. BUILD THE MESSAGE
-                    String combatMsg = enemy.getName() + " took " + dmg + " damage! (HP: " + enemy.getCurrentHP() + ")";
-
-                    // 4. TRIGGER VISUALS
-                    gui.showMessage(combatMsg, true); // Show message (Red text for impact)
-                    // gui.shakeWindow(); // <--- SHAKE THE SCREEN!
-
-                    // 5. Update Stats Bar immediately so we see the HP drop
-                    gui.updateStats(p1Text, p2Text, "ATTACK HIT!");
-
-                    try { Thread.sleep(2000); } catch (InterruptedException ex) {}
-
-                    // 6. Check Death
+                    
+                    handleAttack(currPlayer, enemy, gui);
+                   
+                    // Check Death
                     if (!enemy.isAlive()) {
                         gui.updateStats(p1Text, p2Text, "GAME OVER! " + currPlayer.getName() + " Wins!");
                         gameOver = true;
@@ -128,14 +110,33 @@ public class TurnManager {
     }
 
     //function to habdle attack logic
-    private void handleAttack(Character attacker, Character enemy) throws Exception {
+    private void handleAttack(Character attacker, Character enemy, GameWindow gui) throws Exception {
         System.out.println("Attacking: " + enemy.getName());
 
-        double distance = attacker.calculateDistance(enemy);
-        if (distance > attacker.getAttackRange()) {
+        // 1. Validation
+        if (attacker.calculateDistance(enemy) > attacker.getAttackRange()) {
             throw new Exception("Target is too far to attack!");
         }
         
+        // 2. Logic
+        int dmg = attacker.getAttackDamage();
         attacker.attack(enemy);
+
+        // 3. Visuals (Now handled here!)
+        String combatMsg = enemy.getName() + " took " + dmg + " damage! (HP: " + enemy.getCurrentHP() + ")";
+        
+        gui.showMessage(combatMsg, true); // Red text
+        gui.shakeWindow(); // Shake effect
+        
+        // Update the HP Bars immediately
+        String p1Status = "P1 (" + attacker.getName() + "): " + attacker.getCurrentHP() + " HP";
+        String p2Status = "P2 (" + enemy.getName() + "): " + enemy.getCurrentHP() + " HP";
+        
+        // Note: This assumes P1 is attacker. In a real scenario, you'd fetch P1/P2 from the list directly
+        // simplified for now just to show update:
+        gui.updateStats("Updating...", "Updating...", "ATTACK HIT!");
+        
+        // Pause for readability
+        try { Thread.sleep(2000); } catch (InterruptedException ex) {}
     }
 } 
