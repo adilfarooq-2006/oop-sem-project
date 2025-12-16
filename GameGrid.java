@@ -60,19 +60,30 @@ public class GameGrid {
 
     //method to print the board on console
     public void printBoard() {
-        System.out.println("---Game Board---");
-        for (int i = 0; i < rows; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < cols; j++) {
-                if (board[i][j] == null) {
-                    System.out.print(". "); // Empty spot
-                } else {
-                    // Print first letter of the character (B for Barbarian, A for Archer)
-                    System.out.print(board[i][j].getName().charAt(0) + " ");
-                }
-            }
-            System.out.println("|");
-        }
-        System.out.println("------------------");
+    System.out.println("---Game Board---");
+
+    // 1. Print Column Headers (X Coordinates)
+    System.out.print("    "); // 4 spaces to align with the row label | start
+    for (int j = 0; j < cols; j++) {
+        System.out.print(j + " ");
     }
+    System.out.println(); // Move to next line after printing headers
+
+    // Main Board Loop
+    for (int i = 0; i < rows; i++) {
+        
+        // 2. Print Row Label (Y Coordinate) followed by the border
+        System.out.print(i + " | "); 
+
+        for (int j = 0; j < cols; j++) {
+            if (board[i][j] == null) {
+                System.out.print(". "); 
+            } else {
+                System.out.print(board[i][j].getName().charAt(0) + " ");
+            }
+        }
+        System.out.println("|");
+    }
+    System.out.println("------------------");
+}
 }
