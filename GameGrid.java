@@ -24,35 +24,39 @@ public class GameGrid {
     }
     
     //fucntion that moves the character
-    public void moveCharacter(Character character, int x, int y) throws InvalidMoveException {
-        //check if the position is valid (empty)
-        if (!isValidCoordinate(x, y)) {
-            throw new InvalidMoveException("Move is out of bounds");
-        }
-
-        //check if a character is already on the requested coordinates
-        if (board[y][x] != null) {
-            throw new InvalidMoveException("Tile is already occupied by: " + board[y][x].getName());
-        }
-
-        //move is valid
-        Position currPos = character.getPosition();
-
-        if (!character.move(x, y)) {
-            throw new InvalidMoveException("Character cannot move that far!");
-        }
-
-        //remove the old pos
-        board[currPos.getY()][currPos.getX()] = null;
-
-        //update the characters state
-        character.move(x, y);
-
-        //place character at new spot
-        board[y][x] = character;
-
-        System.out.println(character.getName() + " is moved to (" + x + "," + y + ")");
+    public void moveCharacter(Character character, int newX, int newY) throws InvalidMoveException {
+    
+    // 1. Check if the Tile is valid
+    if (!isValidCoordinate(newX, newY)) {
+        throw new InvalidMoveException("Out of bounds!");
     }
+    
+    // 2. Check for collision
+    if (board[newY][newX] != null) {
+        throw new InvalidMoveException("Tile occupied!");
+    }
+
+    // 3. CAPTURE OLD POSITION (Must be Integers!)
+    // We do this BEFORE calling move(), so we remember where we started.
+    int oldX = character.getPosition().getX();
+    int oldY = character.getPosition().getY();
+
+    // 4. ATTEMPT MOVE
+    // If this fails (returns false), we throw exception and STOP.
+    // The board is never touched.
+    if (!character.move(newX, newY)) {
+        throw new InvalidMoveException("Invalid move for this character!");
+    }
+
+    // 5. CLEAR OLD SPOT
+    // We use the SAVED integers (oldX, oldY), not current character position
+    board[oldY][oldX] = null;
+
+    // 6. UPDATE NEW SPOT
+    board[newY][newX] = character;
+
+    System.out.println(character.getName() + " moved to (" + newX + "," + newY + ")");
+}
     
     public boolean isValidCoordinate(int x, int y) {
         return x >= 0 && x < cols && y >= 0 && y < rows;
