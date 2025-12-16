@@ -1,12 +1,19 @@
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class TurnManager {
     private GameGrid grid;
+    private GameWindow gui;
     private List<Character> turnOrder;
     private int currPlayerIndex;
     private Scanner input;
+
+    // Allow the Main class to grab the grid data for the UI
+    public Character[][] getBoardData() {
+        return grid.getGrid();
+    }
 
     //constructor
     public TurnManager() {
@@ -27,60 +34,65 @@ public class TurnManager {
         grid.placeCharacter(player, player.getPosition().getX(), player.getPosition().getY());
     }
 
-    public void startGame() {
-        System.out.println("--- Game Start: CLASH TACTICS ---");
+    public void startGame(GameWindow gui) {
         boolean gameOver = false;
 
         while (!gameOver) {
-            //get the current player
             Character currPlayer = turnOrder.get(currPlayerIndex);
-            //get the opponenet player (who is not currPlayer)
             Character enemy = turnOrder.get((currPlayerIndex + 1) % 2);
 
-            //show the board
-            grid.printBoard();
-            System.out.println("Turn: " + currPlayer.getName());
-            System.out.println("HP: " + currPlayer.getCurrentHP() + " | Position: " + currPlayer.getPosition());
+            // 1. UPDATE STATS
+            String p1Text = "P1 (" + turnOrder.get(0).getName() + "): " + turnOrder.get(0).getCurrentHP() + " HP";
+            String p2Text = "P2 (" + turnOrder.get(1).getName() + "): " + turnOrder.get(1).getCurrentHP() + " HP";
+            String turnMsg = "Current Turn: " + currPlayer.getName(); // This goes to the Big Label
 
-            System.out.println("Choose your action: \n[1] Move\n[2] Attack");
-            int choice = input.nextInt();
+            gui.updateStats(p1Text, p2Text, turnMsg);
+            gui.refresh(); 
+
+            // 2. WAIT FOR ACTION
+            // This will now update the smaller Instruction Label below
+            String action = gui.waitForAction(); 
 
             try {
-                if (choice == 1) {
-                    handleMove(currPlayer);
+                if (action.equals("MOVE")) {
+                    handleMove(currPlayer, gui);
                 } 
-                else if (choice == 2) {
-                    handleAttack(currPlayer, enemy);
-
+                else if (action.equals("ATTACK")) {
+                    // If you haven't updated handleAttack yet, 
+                    // it will print to console. 
+                    // To fix that, use the same logic:
+                    System.out.println("Attack selected..."); 
+                    handleAttack(currPlayer, enemy); 
+                    
                     if (!enemy.isAlive()) {
-                        System.out.println("\nGAME OVER");
-                        System.out.println(currPlayer.getName() + " wins the game");
+                        gui.updateStats(p1Text, p2Text, "GAME OVER! " + currPlayer.getName() + " Wins!");
                         gameOver = true;
                     }
-                }
-                else {
-                    System.out.println("Ivalid Input. Turn Skipped.");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: " + e.getMessage());
             }
 
-            //switch turn
             if (!gameOver) {
                 currPlayerIndex = (currPlayerIndex + 1) % 2;
-                System.out.println("\n----------------------\n");
             }
         }
-        input.close();
     }
 
     //function to handle movement
-    private void handleMove(Character player) throws InvalidMoveException {
-        System.out.println("Enter X coordinate: ");
-        int x = input.nextInt();
-        System.out.println("Enter Y coordinate: ");
-        int y = input.nextInt();
+    private void handleMove(Character player, GameWindow gui) throws InvalidMoveException {
+        System.out.println(player.getName() + ", click where you want to move...");
+    
+        // 1. Wait for the user to click a tile
+        // The program will PAUSE here until you click!
+        Point click = gui.waitForClick();
+        
+        int x = (int) click.getX();
+        int y = (int) click.getY();
 
+        System.out.println("Destination selected: " + x + "," + y);
+
+        // 2. Perform the move
         grid.moveCharacter(player, x, y);
     }
 

@@ -17,8 +17,14 @@ public class main {
         Character p2 = selectPlayer(input, 7, 7);
         game.addPlayer(p2);
 
+         System.out.println("\nInitializing User Interface...");
+        // Create the window using the data from TurnManager
+        GameWindow ui = new GameWindow(game.getBoardData());
+
         System.out.println("\nInitializing the GAME..." + p1.getName() + " VS " + p2.getName());
-        game.startGame();
+        game.startGame(ui);
+
+       
     }
 
     public static Character selectPlayer(Scanner input, int startX, int startY) {
@@ -45,4 +51,4 @@ public class main {
             }
         }
     }
-}
+}      

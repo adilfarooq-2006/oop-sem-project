@@ -3,6 +3,10 @@ public class GameGrid {
     private int cols;
     private Character[][] board; //this would be 2D map
 
+    public Character[][] getGrid() {
+        return this.board; // Returns the reference to the actual board array
+    }
+
     public GameGrid(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
